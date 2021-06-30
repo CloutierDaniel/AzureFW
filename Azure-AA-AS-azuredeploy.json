@@ -245,8 +245,6 @@
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
 
-    "availabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
-    "availabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]",
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
@@ -348,22 +346,6 @@
          "contentVersion": "1.0.0.0",
          "resources": []
        }
-      }
-    },
-    {
-      "apiVersion": "2019-07-01",
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('availabilitySetName')]",
-      "location": "[parameters('location')]",
-      "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
-      "properties": {
-        "platformFaultDomainCount": 2,
-        "platformUpdateDomainCount": 2
-      },
-      "sku": {
-        "name":  "Aligned"
       }
     },
     {
@@ -879,9 +861,6 @@
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
-        "availabilitySet": {
-          "id": "[variables('availabilitySetId')]"
-        },
         "osProfile": {
           "computerName": "[variables('fgaVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
@@ -950,9 +929,6 @@
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
-        },
-        "availabilitySet": {
-          "id": "[variables('availabilitySetId')]"
         },
         "osProfile": {
           "computerName": "[variables('fgbVmName')]",
